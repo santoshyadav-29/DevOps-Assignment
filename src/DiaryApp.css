@@ -279,7 +279,7 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-/* DIARY PAGE - Viewport Fit with Page Turn Effect */
+/* DIARY PAGE - Viewport Fit without glittering */
 .diary-page {
     min-width: calc(100vw - 280px);
     width: calc(100vw - 280px);
@@ -293,56 +293,25 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    transform-style: preserve-3d;
     overflow-y: auto;
-    will-change: transform;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
 }
 
-/* Page Turn Animation - Smoother without glitching */
-.diary-page.turning-left {
-    animation: pageFlipLeft 0.7s ease-in-out forwards;
-    z-index: 10;
-}
-
+/* Simple fade transition - no glittering */
+.diary-page.turning-left,
 .diary-page.turning-right {
-    animation: pageFlipRight 0.7s ease-in-out forwards;
-    z-index: 10;
+    animation: simpleFade 0.4s ease-in-out;
 }
 
-@keyframes pageFlipLeft {
+@keyframes simpleFade {
     0% {
-        transform: perspective(2000px) rotateY(0deg) translateZ(0);
         opacity: 1;
     }
 
     50% {
-        transform: perspective(2000px) rotateY(-15deg) translateZ(50px);
-        opacity: 0.8;
-        box-shadow: -15px 0 40px rgba(0, 0, 0, 0.3);
+        opacity: 0.7;
     }
 
     100% {
-        transform: perspective(2000px) rotateY(0deg) translateZ(0);
-        opacity: 1;
-    }
-}
-
-@keyframes pageFlipRight {
-    0% {
-        transform: perspective(2000px) rotateY(0deg) translateZ(0);
-        opacity: 1;
-    }
-
-    50% {
-        transform: perspective(2000px) rotateY(15deg) translateZ(50px);
-        opacity: 0.8;
-        box-shadow: 15px 0 40px rgba(0, 0, 0, 0.3);
-    }
-
-    100% {
-        transform: perspective(2000px) rotateY(0deg) translateZ(0);
         opacity: 1;
     }
 }
@@ -799,23 +768,6 @@ body {
     .sidebar {
         width: 85vw;
     }
-}
-
-/* Animations */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.diary-page {
-    animation: fadeInUp 0.6s ease;
 }
 
 /* Scrollbar Styling */

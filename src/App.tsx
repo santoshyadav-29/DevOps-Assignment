@@ -7,7 +7,7 @@ function App() {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-  const audioContextRef = useRef<AudioContext | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const pages = useMemo(
     () => [
@@ -23,54 +23,30 @@ function App() {
     []
   );
 
-  // Initialize Audio Context
+  // Initialize Audio
   useEffect(() => {
-    const AudioContextClass = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-    audioContextRef.current = new AudioContextClass();
-    return () => {
-      if (audioContextRef.current) {
-        audioContextRef.current.close();
-      }
-    };
+    audioRef.current = new Audio("/page turing sound.wav");
+    audioRef.current.volume = 0.3; // Set volume to 30%
   }, []);
 
   // Play page turn sound
   const playPageTurnSound = useCallback(() => {
-    if (!audioContextRef.current) return;
-
-    const audioContext = audioContextRef.current;
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-
-    // Create a subtle "whoosh" sound
-    oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
-    oscillator.frequency.exponentialRampToValueAtTime(
-      200,
-      audioContext.currentTime + 0.15
-    );
-
-    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(
-      0.01,
-      audioContext.currentTime + 0.15
-    );
-
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.15);
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0; // Reset to start
+      audioRef.current
+        .play()
+        .catch((err) => console.log("Audio play failed:", err));
+    }
   }, []);
 
-  const scrollToSection = (id: string) => {
+  const scrollToSection = useCallback((id: string) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
     setIsSidebarOpen(false);
     setActivePage(id);
-  };
+  }, []);
 
   const scrollToPage = useCallback(
     (direction: "next" | "prev") => {
@@ -86,31 +62,24 @@ function App() {
         playPageTurnSound();
 
         const pageId = pages[newIndex];
-        const element = document.getElementById(pageId);
 
-        // Add animation class
-        if (element) {
-          element.classList.add(
-            direction === "next" ? "turning-left" : "turning-right"
-          );
-        }
+        // Smooth scroll without animation class
+        scrollToSection(pageId);
+        setCurrentPageIndex(newIndex);
 
-        // Scroll after a brief delay to sync with animation
+        // Unlock transitions after scroll completes
         setTimeout(() => {
-          scrollToSection(pageId);
-          setCurrentPageIndex(newIndex);
-        }, 100);
-
-        // Remove animation class and unlock transitions
-        setTimeout(() => {
-          if (element) {
-            element.classList.remove("turning-left", "turning-right");
-          }
           setIsTransitioning(false);
-        }, 700);
+        }, 500);
       }
     },
-    [currentPageIndex, pages, isTransitioning, playPageTurnSound]
+    [
+      currentPageIndex,
+      pages,
+      isTransitioning,
+      playPageTurnSound,
+      scrollToSection,
+    ]
   );
 
   const toggleSidebar = () => {
@@ -598,8 +567,6 @@ function App() {
             </div>
           </div>
         </section>
-
-      
       </main>
     </div>
   );
