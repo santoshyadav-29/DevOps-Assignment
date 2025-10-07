@@ -49,7 +49,9 @@ docker run -d -p 8080:80 --name leapfrog-app leapfrog-journey:latest
 
 ## CI/CD Pipeline
 
-### Workflow: `.github/workflows/build.yml`
+### Workflows
+
+#### 1. Build & Test (`.github/workflows/build.yml`)
 
 **Triggers**: Push/PR to `main` branch
 
@@ -58,28 +60,40 @@ docker run -d -p 8080:80 --name leapfrog-app leapfrog-journey:latest
 1. **test-job**: Runs linter and builds application
 2. **build-job**: Builds Docker image (depends on test-job)
 
-```
-Push to main → test-job → build-job → Success
-                   ↓
-                  Fail → Workflow stops
-```
+#### 2. Deploy (`.github/workflows/deploy.yml`)
+
+**Triggers**: Push to `main` branch
+
+**Jobs**:
+
+1. **build**: Builds the application
+2. **deploy**: Deploys to GitHub Pages
+
+### Deployment
+
+The application is automatically deployed to GitHub Pages on every push to `main`.
+
+**Live URL**: `https://santoshyadav-29.github.io/DevOps-Assignment/`
 
 ### Key Features
 
 - ✅ Automated testing on every push
 - ✅ Docker build validation
+- ✅ Automatic deployment to GitHub Pages
 - ✅ Fail-fast behavior
 - ✅ Build caching for faster runs
 
 ## Project Structure
 
 ```
-├── .github/workflows/build.yml    # CI/CD pipeline
-├── src/                           # React source code
-├── public/                        # Static assets
-├── Dockerfile                     # Docker configuration
-├── nginx.conf                     # Nginx server config
-└── package.json                   # Dependencies
+├── .github/workflows/
+│   ├── build.yml              # CI/CD pipeline (test & build)
+│   └── deploy.yml             # Deployment to GitHub Pages
+├── src/                       # React source code
+├── public/                    # Static assets
+├── Dockerfile                 # Docker configuration
+├── nginx.conf                 # Nginx server config
+└── package.json               # Dependencies
 ```
 
 ## Assignment Requirements
