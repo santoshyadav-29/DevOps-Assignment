@@ -1,0 +1,16 @@
+# Trivy Ignore File
+# This file lists CVEs that are acknowledged but accepted for specific reasons
+
+# Node.js Alpine base image vulnerabilities
+# These are in the build stage only and don't affect the final production image
+# CVE-2024-XXXXX - Example: Fixed in future Node version, monitoring upstream
+
+# Nginx Alpine vulnerabilities
+# Document specific CVEs here after review
+# CVE-2024-XXXXX - Example: No fix available, mitigated by other controls
+
+# Instructions:
+# 1. Run: docker scout cves your-image-name
+# 2. Review each vulnerability
+# 3. Document decision to ignore with justification
+# 4. Add CVE ID here if accepting the risk
