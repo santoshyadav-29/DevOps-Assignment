@@ -1,0 +1,833 @@
+/* DIARY LAYOUT CSS - Horizontal Page Turning Design with Animation */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-color: #038e43;
+    --diary-bg: #f5f1e8;
+    --diary-paper: #fdfbf7;
+    --diary-line: #e8dcc4;
+    --diary-text: #2c2416;
+    --diary-accent: #8b7355;
+    --sidebar-bg: #2c2416;
+    --sidebar-text: #f5f1e8;
+}
+
+body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background-color: var(--diary-bg);
+    color: var(--diary-text);
+    line-height: 1.8;
+    overflow: hidden;
+}
+
+.app.diary-layout {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+/* SIDEBAR - Fixed Navigation */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 280px;
+    background: linear-gradient(180deg, var(--sidebar-bg) 0%, #1a1410 100%);
+    color: var(--sidebar-text);
+    padding: 2rem 0;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    overflow-y: auto;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    padding: 0 1.5rem 2rem;
+    border-bottom: 2px solid rgba(245, 241, 232, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.sidebar-logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-family: 'Courier New', monospace;
+    margin: 0;
+}
+
+.sidebar-close {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--sidebar-text);
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+
+.sidebar-close:hover {
+    transform: scale(1.1);
+    color: var(--primary-color);
+}
+
+.sidebar-nav {
+    padding: 2rem 0;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.sidebar-section {
+    padding: 0 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.sidebar-section-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--diary-accent);
+    margin-bottom: 1rem;
+    font-family: 'Arial', sans-serif;
+    font-weight: 600;
+}
+
+.sidebar-menu {
+    list-style: none;
+}
+
+.sidebar-menu li {
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-menu li a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: var(--sidebar-text);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+.sidebar-menu li a:hover {
+    background-color: rgba(3, 142, 67, 0.2);
+    color: var(--primary-color);
+    transform: translateX(5px);
+}
+
+.sidebar-menu li.active a {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+.page-icon {
+    font-size: 1.2rem;
+    min-width: 24px;
+}
+
+.sidebar-footer {
+    position: absolute;
+    bottom: 2rem;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    border-top: 2px solid rgba(245, 241, 232, 0.1);
+    text-align: center;
+}
+
+.diary-date {
+    font-size: 0.9rem;
+    color: var(--diary-accent);
+    margin-bottom: 0.5rem;
+}
+
+.diary-author {
+    font-size: 0.85rem;
+    color: rgba(245, 241, 232, 0.6);
+    font-style: italic;
+}
+
+.sidebar-toggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 999;
+    background: var(--sidebar-bg);
+    color: var(--primary-color);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.sidebar-toggle:hover {
+    transform: scale(1.1);
+    background: var(--primary-color);
+    color: white;
+}
+
+.sidebar-toggle.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* MAIN CONTENT - Horizontal Scroll Layout with Page Turn Animation */
+.diary-content {
+    margin-left: 280px;
+    flex: 1;
+    height: 100vh;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    perspective: 2000px;
+    will-change: scroll-position;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+}
+
+.diary-content::-webkit-scrollbar {
+    height: 8px;
+}
+
+.diary-content::-webkit-scrollbar-track {
+    background: var(--diary-line);
+}
+
+.diary-content::-webkit-scrollbar-thumb {
+    background: var(--diary-accent);
+    border-radius: 4px;
+}
+
+.diary-content::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+/* Page Navigation Guides */
+.page-nav-guide {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(3, 142, 67, 0.9);
+    color: white;
+    padding: 1rem 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    z-index: 900;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    opacity: 0.7;
+}
+
+.page-nav-guide:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.page-nav-guide.prev {
+    left: 300px;
+}
+
+.page-nav-guide.next {
+    right: 20px;
+}
+
+.page-nav-guide span {
+    display: block;
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+/* Page Counter */
+.page-counter {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(44, 36, 22, 0.9);
+    color: var(--sidebar-text);
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    z-index: 900;
+    font-size: 0.9rem;
+    font-family: 'Courier New', monospace;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* DIARY PAGE - Viewport Fit with Page Turn Effect */
+.diary-page {
+    min-width: calc(100vw - 280px);
+    width: calc(100vw - 280px);
+    height: 100vh;
+    flex-shrink: 0;
+    scroll-snap-align: start;
+    padding: 2.5rem 4rem;
+    background: var(--diary-paper);
+    box-shadow: inset 0 0 0 1px rgba(139, 115, 85, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    transform-style: preserve-3d;
+    overflow-y: auto;
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* Page Turn Animation - Smoother without glitching */
+.diary-page.turning-left {
+    animation: pageFlipLeft 0.7s ease-in-out forwards;
+    z-index: 10;
+}
+
+.diary-page.turning-right {
+    animation: pageFlipRight 0.7s ease-in-out forwards;
+    z-index: 10;
+}
+
+@keyframes pageFlipLeft {
+    0% {
+        transform: perspective(2000px) rotateY(0deg) translateZ(0);
+        opacity: 1;
+    }
+
+    50% {
+        transform: perspective(2000px) rotateY(-15deg) translateZ(50px);
+        opacity: 0.8;
+        box-shadow: -15px 0 40px rgba(0, 0, 0, 0.3);
+    }
+
+    100% {
+        transform: perspective(2000px) rotateY(0deg) translateZ(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pageFlipRight {
+    0% {
+        transform: perspective(2000px) rotateY(0deg) translateZ(0);
+        opacity: 1;
+    }
+
+    50% {
+        transform: perspective(2000px) rotateY(15deg) translateZ(50px);
+        opacity: 0.8;
+        box-shadow: 15px 0 40px rgba(0, 0, 0, 0.3);
+    }
+
+    100% {
+        transform: perspective(2000px) rotateY(0deg) translateZ(0);
+        opacity: 1;
+    }
+}
+
+.page-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: repeating-linear-gradient(transparent,
+            transparent 31px,
+            var(--diary-line) 31px,
+            var(--diary-line) 32px);
+    opacity: 0.3;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.diary-page-content {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+.hero-page {
+    background: linear-gradient(135deg, rgba(3, 142, 67, 0.85) 0%, rgba(2, 109, 51, 0.85) 100%),
+        url('/Background.jpg') center/cover no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    color: white;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-page .page-lines {
+    background-image: repeating-linear-gradient(transparent,
+            transparent 31px,
+            rgba(255, 255, 255, 0.1) 31px,
+            rgba(255, 255, 255, 0.1) 32px);
+}
+
+.diary-header {
+    margin-bottom: 1.5rem;
+}
+
+.diary-title {
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-family: 'Georgia', serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.diary-subtitle {
+    font-size: 1.8rem;
+    opacity: 0.95;
+    margin-bottom: 1.2rem;
+    font-style: italic;
+}
+
+.diary-meta {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-top: 1rem;
+}
+
+.diary-intro {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.diary-entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--diary-line);
+}
+
+.diary-entry-title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--diary-text);
+    font-family: 'Georgia', serif;
+}
+
+.diary-date-stamp {
+    font-size: 0.9rem;
+    color: var(--diary-accent);
+    font-style: italic;
+    background: var(--diary-line);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+}
+
+.diary-text {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--diary-text);
+}
+
+.diary-paragraph {
+    margin-bottom: 1.5rem;
+    text-align: justify;
+    text-indent: 2rem;
+}
+
+.diary-subheading {
+    font-size: 1.6rem;
+    margin: 2rem 0 1rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.diary-list {
+    list-style: none;
+    margin: 1.5rem 0;
+    padding-left: 1rem;
+}
+
+.diary-list li {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    position: relative;
+    font-size: 1.05rem;
+}
+
+.diary-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-weight: bold;
+}
+
+/* Balanced, attractive team photos */
+.diary-photo {
+    margin: 2rem 0;
+}
+
+.diary-photo img,
+.image-container img,
+.section-image {
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    border: 8px solid white;
+    background: white;
+    display: block;
+    margin: 0 auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.diary-photo img:hover,
+.image-container img:hover,
+.section-image:hover {
+    transform: scale(1.03) rotate(1deg);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.photo-caption {
+    text-align: center;
+    font-size: 1rem;
+    color: var(--diary-accent);
+    margin-top: 0.8rem;
+    font-style: italic;
+}
+
+.diary-quote {
+    font-size: 1.3rem;
+    font-style: italic;
+    line-height: 1.8;
+    color: var(--primary-color);
+    margin: 2rem 0;
+    padding: 1.5rem 2rem;
+    border-left: 4px solid var(--primary-color);
+    background: rgba(3, 142, 67, 0.05);
+}
+
+.diary-signature {
+    margin-top: 2.5rem;
+    text-align: right;
+    font-style: italic;
+    color: var(--diary-accent);
+    font-size: 1.05rem;
+}
+
+.signature-line {
+    font-size: 1.4rem;
+    margin-top: 0.5rem;
+    font-family: 'Brush Script MT', cursive;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+    margin: 2rem 0;
+}
+
+.content-grid-reverse {
+    direction: rtl;
+}
+
+.content-grid-reverse>* {
+    direction: ltr;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.stat-card {
+    background: var(--diary-line);
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    border: 2px solid var(--diary-accent);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.95rem;
+    color: var(--diary-accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Team Grid - Well-Proportioned */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.team-member {
+    text-align: center;
+    padding: 1.5rem;
+    background: rgba(3, 142, 67, 0.05);
+    border-radius: 8px;
+    border: 2px dashed var(--primary-color);
+}
+
+.team-member h3 {
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.team-member p {
+    font-size: 1rem;
+    color: var(--diary-accent);
+}
+
+.learnings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.8rem;
+    margin: 2rem 0;
+}
+
+.learning-card {
+    padding: 1.8rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.learning-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.learning-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.learning-card h3 {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    margin-bottom: 0.8rem;
+}
+
+.learning-card p {
+    font-size: 1rem;
+    color: var(--diary-accent);
+    line-height: 1.7;
+}
+
+.cta-button {
+    background-color: white;
+    color: var(--primary-color);
+    border: none;
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1.5rem;
+    font-family: 'Arial', sans-serif;
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    background: var(--primary-color);
+    color: white;
+}
+
+.diary-footer {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+    text-align: center;
+    color: var(--diary-accent);
+    border-top: 2px solid var(--diary-line);
+    font-size: 1rem;
+}
+
+.footer-content p {
+    margin: 0.5rem 0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .sidebar-close {
+        display: block;
+    }
+
+    .sidebar-toggle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .diary-content {
+        margin-left: 0;
+    }
+
+    .diary-page {
+        min-width: 100vw;
+        width: 100vw;
+        padding: 1.5rem 2rem;
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .content-grid-reverse {
+        direction: ltr;
+    }
+
+    .learnings-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .diary-title {
+        font-size: 2rem;
+    }
+
+    .diary-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .diary-entry-title {
+        font-size: 1.4rem;
+    }
+
+    .diary-entry-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .diary-page {
+        padding: 1.5rem 1rem;
+    }
+
+    .diary-photo img,
+    .image-container img,
+    .section-image {
+        max-width: 100%;
+    }
+
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .diary-meta {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .diary-page {
+        padding: 1.2rem 1rem;
+    }
+
+    .diary-title {
+        font-size: 1.8rem;
+    }
+
+    .diary-subtitle {
+        font-size: 1rem;
+    }
+
+    .diary-entry-title {
+        font-size: 1.3rem;
+    }
+
+    .sidebar {
+        width: 85vw;
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.diary-page {
+    animation: fadeInUp 0.6s ease;
+}
+
+/* Scrollbar Styling */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 3px;
+}
