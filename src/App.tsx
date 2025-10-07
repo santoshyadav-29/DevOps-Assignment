@@ -178,7 +178,7 @@ function App() {
             </div>
             <div className="content-image">
               <img
-                src="/Design Thinking Session.JPG"
+                src="Design Thinking Session.JPG"
                 alt="Design Thinking Session"
                 className="section-image"
               />
@@ -198,7 +198,7 @@ function App() {
           <div className="content-grid content-grid-reverse">
             <div className="content-image">
               <img
-                src="/AI session.JPG"
+                src="AI session.JPG"
                 alt="AI Session"
                 className="section-image"
               />
@@ -274,7 +274,7 @@ function App() {
             </div>
             <div className="content-image">
               <img
-                src="/devops session.png"
+                src="devops session.png"
                 alt="DevOps Session"
                 className="section-image"
               />
