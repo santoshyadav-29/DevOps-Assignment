@@ -53,6 +53,11 @@ function App() {
               <a onClick={() => scrollToSection("ai-session")}>AI Session</a>
             </li>
             <li>
+              <a onClick={() => scrollToSection("devops-session")}>
+                DevOps Session
+              </a>
+            </li>
+            <li>
               <a onClick={() => scrollToSection("learnings")}>Key Learnings</a>
             </li>
             <li>
@@ -227,8 +232,59 @@ function App() {
         </div>
       </section>
 
+      {/* DevOps Session Section */}
+      <section id="devops-session" className="section">
+        <div className="container">
+          <h2 className="section-title">DevOps Session</h2>
+          <p className="section-description">
+            Exploring modern DevOps practices and CI/CD pipelines
+          </p>
+          <div className="content-grid">
+            <div className="content-text">
+              <h3>What We Learned</h3>
+              <ul className="feature-list">
+                <li>
+                  <strong>Containerization:</strong> Docker and container
+                  orchestration
+                </li>
+                <li>
+                  <strong>CI/CD Pipelines:</strong> Automated testing and
+                  deployment workflows
+                </li>
+                <li>
+                  <strong>Infrastructure as Code:</strong> Managing
+                  infrastructure programmatically
+                </li>
+                <li>
+                  <strong>Monitoring & Logging:</strong> Application
+                  observability and debugging
+                </li>
+                <li>
+                  <strong>Best Practices:</strong> DevOps culture and
+                  collaboration
+                </li>
+              </ul>
+              <p>
+                The DevOps session provided hands-on experience with modern
+                deployment practices. We learned how to containerize
+                applications, set up automated pipelines, and understand the
+                importance of continuous integration and delivery in today's
+                software development lifecycle.
+              </p>
+            </div>
+            <div className="content-image">
+              <img
+                src="/devops session.png"
+                alt="DevOps Session"
+                className="section-image"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Key Learnings Section */}
-      <section id="learnings" className="section">
+      <section id="learnings" className="section section-alt">
         <div className="container">
           <h2 className="section-title">Key Learnings</h2>
           <div className="learnings-grid">
