@@ -1,5 +1,5 @@
 # Build stage - INTENTIONALLY BROKEN FOR DEBUGGING ASSIGNMENT
-FROM node:18-this-is-a-fake-tag AS build
+FROM node:20-alpine AS build
 
 # Set working directory
 WORKDIR /app
