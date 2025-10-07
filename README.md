@@ -69,6 +69,17 @@ docker run -d -p 8080:80 --name leapfrog-app leapfrog-journey:latest
 1. **build**: Builds the application
 2. **deploy**: Deploys to GitHub Pages
 
+#### 3. Debug Assignment (`.github/workflows/debug.yml`)
+
+**Triggers**: Changes to `Dockerfile.debug` or manual trigger
+
+**Jobs**:
+
+1. **test-job**: Runs tests
+2. **build-job**: Builds Docker image from `Dockerfile.debug`
+
+**Purpose**: Assignment 2 - Debugging practice (see `DEBUG_ASSIGNMENT.md`)
+
 ### Deployment
 
 The application is automatically deployed to GitHub Pages on every push to `main`.
@@ -88,13 +99,31 @@ The application is automatically deployed to GitHub Pages on every push to `main
 ```
 ├── .github/workflows/
 │   ├── build.yml              # CI/CD pipeline (test & build)
-│   └── deploy.yml             # Deployment to GitHub Pages
+│   ├── deploy.yml             # Deployment to GitHub Pages
+│   └── debug.yml              # Debug assignment workflow
 ├── src/                       # React source code
 ├── public/                    # Static assets
-├── Dockerfile                 # Docker configuration
+├── Dockerfile                 # Docker configuration (working)
+├── Dockerfile.debug           # Docker configuration (for debugging)
 ├── nginx.conf                 # Nginx server config
+├── DEBUGGING.md               # Assignment 2 documentation
 └── package.json               # Dependencies
 ```
+
+## Assignments
+
+### Assignment 1: Docker & CI/CD Setup ✅
+
+- Dockerfile with multi-stage build
+- GitHub Actions workflow with test & build jobs
+- Automated triggers and deployment
+
+### Assignment 2: The Debugging Detective 🕵️
+
+- Separate debugging workflow
+- Intentional bug introduction and fixing
+- Error analysis and documentation
+- See `DEBUG_ASSIGNMENT.md` for instructions
 
 ## Assignment Requirements
 
