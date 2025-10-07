@@ -131,7 +131,7 @@ function App() {
             program
           </p>
           <div className="image-container">
-            <img src="/Our Team.JPG" alt="Our Team" className="section-image" />
+            <img src="Our Team.JPG" alt="Our Team" className="section-image" />
           </div>
           <p className="image-caption">
             Our diverse and talented team brought unique perspectives and skills
