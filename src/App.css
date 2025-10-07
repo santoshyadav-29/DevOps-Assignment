@@ -91,11 +91,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #038e43 0%, #026d33 100%);
+  background:
+    linear-gradient(135deg, rgba(3, 142, 67, 0.85) 0%, rgba(2, 109, 51, 0.85) 100%),
+    url('/Background.jpg') center/cover no-repeat;
+  background-attachment: fixed;
   color: white;
   text-align: center;
   padding: 2rem;
   margin-top: 70px;
+  position: relative;
 }
 
 .hero-content {
